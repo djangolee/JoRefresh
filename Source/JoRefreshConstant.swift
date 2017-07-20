@@ -53,7 +53,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
         }
     }
     
-    private var _headerOfPercent: CGFloat = 0 {
+    fileprivate var _headerOfPercent: CGFloat = 0 {
         didSet {
             if let scrollView = superview as? UIScrollView {
                 header?.updatePercent(_headerOfPercent, isDragging: scrollView.isDragging, isDecelerating: scrollView.isDecelerating)
@@ -61,7 +61,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
         }
     }
     
-    private var _footererOfPercent: CGFloat = 0 {
+    fileprivate var _footererOfPercent: CGFloat = 0 {
         didSet {
             if let scrollView = superview as? UIScrollView {
                 footer?.updatePercent(_footererOfPercent, isDragging: scrollView.isDragging, isDecelerating: scrollView.isDecelerating)
@@ -124,7 +124,8 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     var contentInset: UIEdgeInsets {
         get {
             if #available(iOS 11.0, *) {
-                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
+//                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
+                return UIEdgeInsets.zero
             } else {
                 return scrollView?.contentInset ?? UIEdgeInsets.zero
             }
@@ -260,7 +261,7 @@ extension JoRefreshConstant {
         tailer.frame.origin.y = scrollView.contentSize.height
     }
     
-    private func setActive(view: JoRefreshControl?, state: Bool) {
+    fileprivate func setActive(view: JoRefreshControl?, state: Bool) {
         guard let view = view else {
             return
         }

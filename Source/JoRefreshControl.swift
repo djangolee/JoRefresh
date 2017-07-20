@@ -16,25 +16,17 @@ open class JoRefreshControl: UIControl, UIScrollViewDelegate {
     internal private (set) var refreshPercent: CGFloat = 0
     internal weak var respondDelegate: JoRefreshControlRespond? = nil
     
-    internal func _beginRefreshing() {
+    open func beginRefreshing() {
         isRefreshing = true
         refreshPercent = 1
         respondDelegate?.beginRefreshing(self)
         sendActions(for: .valueChanged)
     }
     
-    internal func _endRefreshing() {
+    open func endRefreshing() {
         isRefreshing = false
         refreshPercent = 0
         respondDelegate?.endRefreshing(self)
-    }
-    
-    open func beginRefreshing() {
-        _beginRefreshing()
-    }
-    
-    open func endRefreshing() {
-        _endRefreshing()
     }
     
     open func updatePercent(_ percent: CGFloat, isDragging: Bool, isDecelerating: Bool) {
@@ -51,7 +43,7 @@ open class JoRefreshControl: UIControl, UIScrollViewDelegate {
             if isResponding {
                 isResponding = false
                 if percent == 1 {
-                    _beginRefreshing()
+                    beginRefreshing()
                 }
             }
         }

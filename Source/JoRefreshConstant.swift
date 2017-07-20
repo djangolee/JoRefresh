@@ -217,7 +217,6 @@ extension JoRefreshConstant {
     
             let isLongContent: Bool = scrollView.contentSize.height + contentInset.top + contentInset.bottom > scrollView.frame.height
             let maxY: CGFloat = isLongContent ? scrollView.contentSize.height + contentInset.bottom : scrollView.frame.height - contentInset.top
-            
             if let header = header,
                 contentOffset.y + adjusted < -contentInset.top {
                 
@@ -232,7 +231,6 @@ extension JoRefreshConstant {
                 setActive(view: header, state: false)
                 dispatchForFooter(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
             } else {
-                setActive(view: header, state: false)
                 setActive(view: footer, state: false)
             }
         }

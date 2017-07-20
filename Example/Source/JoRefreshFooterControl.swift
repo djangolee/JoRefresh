@@ -37,6 +37,7 @@ class JoRefreshFooterControl: JoRefreshControl {
     override func layoutSubviews() {
         super.layoutSubviews()
         lable.frame = bounds
+        backgroundColor = .white
         layer.borderWidth = 1
     }
 }

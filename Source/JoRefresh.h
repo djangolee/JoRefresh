@@ -6,7 +6,7 @@
 //  Copyright © 2017 django. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <UIKit/UIKit.h>
 
 //! Project version number for JoRefresh.
 FOUNDATION_EXPORT double JoRefreshVersionNumber;

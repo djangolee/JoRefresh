@@ -7,17 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D8A1E9A41F20AF8A005A64E6 /* JoRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = D8A1E9A21F20AF8A005A64E6 /* JoRefresh.h */; };
+		D8FC69BC1F20B12F00B50354 /* JoRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = D8FC69B61F20B12F00B50354 /* JoRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D8FC69BD1F20B12F00B50354 /* JoRefreshConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */; };
+		D8FC69BE1F20B12F00B50354 /* JoRefreshConstantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */; };
+		D8FC69BF1F20B12F00B50354 /* JoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */; };
+		D8FC69C01F20B12F00B50354 /* UIScrollView+JoRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D8A1E9941F20AEAA005A64E6 /* JoRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JoRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8A1E9A11F20AF8A005A64E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D8A1E9A21F20AF8A005A64E6 /* JoRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoRefresh.h; sourceTree = "<group>"; };
+		D8FC69A91F20B10900B50354 /* JoRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JoRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8FC69B51F20B12F00B50354 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8FC69B61F20B12F00B50354 /* JoRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoRefresh.h; sourceTree = "<group>"; };
+		D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshConstant.swift; sourceTree = "<group>"; };
+		D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshConstantTarget.swift; sourceTree = "<group>"; };
+		D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshControl.swift; sourceTree = "<group>"; };
+		D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+JoRefresh.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D8A1E9901F20AEAA005A64E6 /* Frameworks */ = {
+		D8FC69A51F20B10900B50354 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -27,27 +35,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D8A1E98A1F20AEAA005A64E6 = {
+		D8FC699F1F20B10900B50354 = {
 			isa = PBXGroup;
 			children = (
-				D8A1E9A01F20AF8A005A64E6 /* Source */,
-				D8A1E9951F20AEAA005A64E6 /* Products */,
+				D8FC69B41F20B12F00B50354 /* Source */,
+				D8FC69AA1F20B10900B50354 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		D8A1E9951F20AEAA005A64E6 /* Products */ = {
+		D8FC69AA1F20B10900B50354 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D8A1E9941F20AEAA005A64E6 /* JoRefresh.framework */,
+				D8FC69A91F20B10900B50354 /* JoRefresh.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D8A1E9A01F20AF8A005A64E6 /* Source */ = {
+		D8FC69B41F20B12F00B50354 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D8A1E9A11F20AF8A005A64E6 /* Info.plist */,
-				D8A1E9A21F20AF8A005A64E6 /* JoRefresh.h */,
+				D8FC69B51F20B12F00B50354 /* Info.plist */,
+				D8FC69B61F20B12F00B50354 /* JoRefresh.h */,
+				D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */,
+				D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */,
+				D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */,
+				D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -55,25 +67,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		D8A1E9911F20AEAA005A64E6 /* Headers */ = {
+		D8FC69A61F20B10900B50354 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8A1E9A41F20AF8A005A64E6 /* JoRefresh.h in Headers */,
+				D8FC69BC1F20B12F00B50354 /* JoRefresh.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D8A1E9931F20AEAA005A64E6 /* JoRefresh */ = {
+		D8FC69A81F20B10900B50354 /* JoRefresh */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8A1E99C1F20AEAA005A64E6 /* Build configuration list for PBXNativeTarget "JoRefresh" */;
+			buildConfigurationList = D8FC69B11F20B10900B50354 /* Build configuration list for PBXNativeTarget "JoRefresh" */;
 			buildPhases = (
-				D8A1E98F1F20AEAA005A64E6 /* Sources */,
-				D8A1E9901F20AEAA005A64E6 /* Frameworks */,
-				D8A1E9911F20AEAA005A64E6 /* Headers */,
-				D8A1E9921F20AEAA005A64E6 /* Resources */,
+				D8FC69A41F20B10900B50354 /* Sources */,
+				D8FC69A51F20B10900B50354 /* Frameworks */,
+				D8FC69A61F20B10900B50354 /* Headers */,
+				D8FC69A71F20B10900B50354 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -81,44 +93,44 @@
 			);
 			name = JoRefresh;
 			productName = JoRefresh;
-			productReference = D8A1E9941F20AEAA005A64E6 /* JoRefresh.framework */;
+			productReference = D8FC69A91F20B10900B50354 /* JoRefresh.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D8A1E98B1F20AEAA005A64E6 /* Project object */ = {
+		D8FC69A01F20B10900B50354 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = django;
 				TargetAttributes = {
-					D8A1E9931F20AEAA005A64E6 = {
+					D8FC69A81F20B10900B50354 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 673AB3A2L9;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
-			buildConfigurationList = D8A1E98E1F20AEAA005A64E6 /* Build configuration list for PBXProject "JoRefresh" */;
+			buildConfigurationList = D8FC69A31F20B10900B50354 /* Build configuration list for PBXProject "JoRefresh" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = D8A1E98A1F20AEAA005A64E6;
-			productRefGroup = D8A1E9951F20AEAA005A64E6 /* Products */;
+			mainGroup = D8FC699F1F20B10900B50354;
+			productRefGroup = D8FC69AA1F20B10900B50354 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D8A1E9931F20AEAA005A64E6 /* JoRefresh */,
+				D8FC69A81F20B10900B50354 /* JoRefresh */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		D8A1E9921F20AEAA005A64E6 /* Resources */ = {
+		D8FC69A71F20B10900B50354 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -128,17 +140,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D8A1E98F1F20AEAA005A64E6 /* Sources */ = {
+		D8FC69A41F20B10900B50354 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8FC69BD1F20B12F00B50354 /* JoRefreshConstant.swift in Sources */,
+				D8FC69BE1F20B12F00B50354 /* JoRefreshConstantTarget.swift in Sources */,
+				D8FC69C01F20B12F00B50354 /* UIScrollView+JoRefresh.swift in Sources */,
+				D8FC69BF1F20B12F00B50354 /* JoRefreshControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		D8A1E99A1F20AEAA005A64E6 /* Debug */ = {
+		D8FC69AF1F20B10900B50354 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -160,7 +176,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -180,18 +196,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		D8A1E99B1F20AEAA005A64E6 /* Release */ = {
+		D8FC69B01F20B10900B50354 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -213,7 +230,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -227,29 +244,29 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		D8A1E99D1F20AEAA005A64E6 /* Debug */ = {
+		D8FC69B21F20B10900B50354 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 673AB3A2L9;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.django.JoRefresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -257,20 +274,18 @@
 			};
 			name = Debug;
 		};
-		D8A1E99E1F20AEAA005A64E6 /* Release */ = {
+		D8FC69B31F20B10900B50354 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 673AB3A2L9;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/Source/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.django.JoRefresh;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -281,25 +296,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D8A1E98E1F20AEAA005A64E6 /* Build configuration list for PBXProject "JoRefresh" */ = {
+		D8FC69A31F20B10900B50354 /* Build configuration list for PBXProject "JoRefresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D8A1E99A1F20AEAA005A64E6 /* Debug */,
-				D8A1E99B1F20AEAA005A64E6 /* Release */,
+				D8FC69AF1F20B10900B50354 /* Debug */,
+				D8FC69B01F20B10900B50354 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8A1E99C1F20AEAA005A64E6 /* Build configuration list for PBXNativeTarget "JoRefresh" */ = {
+		D8FC69B11F20B10900B50354 /* Build configuration list for PBXNativeTarget "JoRefresh" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D8A1E99D1F20AEAA005A64E6 /* Debug */,
-				D8A1E99E1F20AEAA005A64E6 /* Release */,
+				D8FC69B21F20B10900B50354 /* Debug */,
+				D8FC69B31F20B10900B50354 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D8A1E98B1F20AEAA005A64E6 /* Project object */;
+	rootObject = D8FC69A01F20B10900B50354 /* Project object */;
 }

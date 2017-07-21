@@ -38,6 +38,8 @@ public protocol JoRefreshConstantTarget {
     var adjusted: CGFloat { get set }
     var footerActiveMode: JoRefreshFooterActiveMode { get set }
     
+    var isRefreshing: Bool { get }
+    
     func endRefreshing()
 }
 

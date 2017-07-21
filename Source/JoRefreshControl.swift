@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class JoRefreshControl: UIControl, UIScrollViewDelegate {
+open class JoRefreshControl: UIControl {
     
     internal private (set) var isResponding: Bool = false
     internal private (set) var refreshPercent: CGFloat = 0

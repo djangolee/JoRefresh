@@ -92,8 +92,10 @@ extension JoViewController {
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
         tableView.joRefresh.tailer = JoRefreshTailerControl()
+        tableView.joRefresh.footerActiveMode = .toBottom
         tableView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)
         tableView.joRefresh.footer?.addTarget(self, action: #selector(moreDate), for: .valueChanged)
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
         view.addSubview(tableView)
     }

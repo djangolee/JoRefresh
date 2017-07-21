@@ -7,21 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D82E91D21F219EE8005BCB41 /* JoRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82E91D11F219EE8005BCB41 /* JoRefresh.swift */; };
 		D8FC69BC1F20B12F00B50354 /* JoRefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = D8FC69B61F20B12F00B50354 /* JoRefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8FC69BD1F20B12F00B50354 /* JoRefreshConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */; };
-		D8FC69BE1F20B12F00B50354 /* JoRefreshConstantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */; };
 		D8FC69BF1F20B12F00B50354 /* JoRefreshControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */; };
-		D8FC69C01F20B12F00B50354 /* UIScrollView+JoRefresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D82E91D11F219EE8005BCB41 /* JoRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefresh.swift; sourceTree = "<group>"; };
 		D8FC69A91F20B10900B50354 /* JoRefresh.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JoRefresh.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FC69B51F20B12F00B50354 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8FC69B61F20B12F00B50354 /* JoRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JoRefresh.h; sourceTree = "<group>"; };
 		D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshConstant.swift; sourceTree = "<group>"; };
-		D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshConstantTarget.swift; sourceTree = "<group>"; };
 		D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoRefreshControl.swift; sourceTree = "<group>"; };
-		D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+JoRefresh.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,10 +54,9 @@
 			children = (
 				D8FC69B51F20B12F00B50354 /* Info.plist */,
 				D8FC69B61F20B12F00B50354 /* JoRefresh.h */,
+				D82E91D11F219EE8005BCB41 /* JoRefresh.swift */,
 				D8FC69B71F20B12F00B50354 /* JoRefreshConstant.swift */,
-				D8FC69B81F20B12F00B50354 /* JoRefreshConstantTarget.swift */,
 				D8FC69B91F20B12F00B50354 /* JoRefreshControl.swift */,
-				D8FC69BA1F20B12F00B50354 /* UIScrollView+JoRefresh.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -144,9 +141,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D82E91D21F219EE8005BCB41 /* JoRefresh.swift in Sources */,
 				D8FC69BD1F20B12F00B50354 /* JoRefreshConstant.swift in Sources */,
-				D8FC69BE1F20B12F00B50354 /* JoRefreshConstantTarget.swift in Sources */,
-				D8FC69C01F20B12F00B50354 /* UIScrollView+JoRefresh.swift in Sources */,
 				D8FC69BF1F20B12F00B50354 /* JoRefreshControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

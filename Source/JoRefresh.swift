@@ -1,12 +1,31 @@
 //
-//  JoRefreshConstantTarget.swift
+//  JoRefresh.swift
 //  JoRefresh
 //
-//  Created by django on 7/18/17.
+//  Created by django on 7/21/17.
 //  Copyright © 2017 django. All rights reserved.
 //
 
 import UIKit
+import ObjectiveC
+
+fileprivate var JoRefreshConstantTargetKey: UInt8 = 0
+
+public extension UIScrollView {
+
+    var joRefresh: JoRefreshConstantTarget {
+        set { }
+        get {
+            var target = objc_getAssociatedObject(self, &JoRefreshConstantTargetKey) as? JoRefreshConstantTarget
+            if target == nil {
+                target = JoRefreshConstant()
+                objc_setAssociatedObject(self, &JoRefreshConstantTargetKey, target, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                addSubview(target as! UIView)
+            }
+            return target!;
+        }
+    }
+}
 
 public protocol JoRefreshConstantTarget {
     
@@ -14,21 +33,17 @@ public protocol JoRefreshConstantTarget {
     var footer: JoRefreshControl? { get set }
     var tailer: JoRefreshControl? { get set }
     
-    var offset: CGFloat { get set }
+    var headerOffset: CGFloat { get set }
+    var footerOffset: CGFloat { get set }
     var adjusted: CGFloat { get set }
-    var isRefreshing: Bool { get }
-    var headerOfPercent: CGFloat { get }
-    var footererOfPercent: CGFloat { get }
+    var footerActiveMode: JoRefreshFooterActiveMode { get set }
     
-    func beginRefreshing()
     func endRefreshing()
 }
 
-extension JoRefreshConstantTarget {
-
-    func beginRefreshing() { }
-    func endRefreshing() { }
-    
+public enum JoRefreshFooterActiveMode: Int {
+    case dragging
+    case toBottom
 }
 
 internal func + (lhs: UIEdgeInsets, rhs: UIEdgeInsets) -> UIEdgeInsets {

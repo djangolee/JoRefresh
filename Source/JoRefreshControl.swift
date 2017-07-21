@@ -10,44 +10,42 @@ import UIKit
 
 open class JoRefreshControl: UIControl, UIScrollViewDelegate {
     
-    open private (set) var isRefreshing: Bool = false
-    
     internal private (set) var isResponding: Bool = false
     internal private (set) var refreshPercent: CGFloat = 0
     internal weak var respondDelegate: JoRefreshControlRespond? = nil
     
+    open private (set) var isRefreshing: Bool = false {
+        didSet {
+            guard oldValue != isRefreshing else { return }
+            
+            if isRefreshing {
+                refreshPercent = 1
+                respondDelegate?.beginRefreshing(self)
+                sendActions(for: .valueChanged)
+            } else {
+                refreshPercent = 0
+                respondDelegate?.endRefreshing(self)
+            }
+        }
+    }
+    
+    internal func _updatePercent(_ percent: CGFloat) {
+        guard !isRefreshing else { return }
+        refreshPercent = percent
+        respondDelegate?.refreshControlDidRespond(self)
+        updatePercent(percent)
+    }
+    
+    open func updatePercent(_ percent: CGFloat) {
+        
+    }
+    
     open func beginRefreshing() {
         isRefreshing = true
-        refreshPercent = 1
-        respondDelegate?.beginRefreshing(self)
-        sendActions(for: .valueChanged)
     }
     
     open func endRefreshing() {
         isRefreshing = false
-        refreshPercent = 0
-        respondDelegate?.endRefreshing(self)
-    }
-    
-    open func updatePercent(_ percent: CGFloat, isDragging: Bool, isDecelerating: Bool) {
-        guard !isRefreshing else {
-            return
-        }
-        refreshPercent = percent
-        if isDragging, !isDecelerating {
-            if !isResponding {
-                isResponding = true
-                respondDelegate?.refreshControlDidBegenRespond(self)
-            }
-        } else {
-            if isResponding {
-                isResponding = false
-                if percent == 1 {
-                    beginRefreshing()
-                }
-            }
-        }
-        respondDelegate?.refreshControlDidRespond(self)
     }
     
     open override func didMoveToSuperview() {
@@ -69,7 +67,6 @@ open class JoRefreshControl: UIControl, UIScrollViewDelegate {
 internal protocol JoRefreshControlRespond: class {
 
     func refreshControlDidRespond(_ refreshControl: JoRefreshControl)
-    func refreshControlDidBegenRespond(_ refreshControl: JoRefreshControl)
     func beginRefreshing(_ refreshControl: JoRefreshControl)
     func endRefreshing(_ refreshControl: JoRefreshControl)
     

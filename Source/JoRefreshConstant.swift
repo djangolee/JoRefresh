@@ -16,6 +16,70 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     
     weak var scrollView: UIScrollView? = nil
     
+    var header: JoRefreshControl? {
+        get { return _header }
+        set { _header = newValue }
+    }
+    
+    var footer: JoRefreshControl? {
+        get { return _footer }
+        set { _footer = newValue }
+    }
+    
+    var tailer: JoRefreshControl? {
+        get { return _tailer }
+        set { _tailer = newValue }
+    }
+    
+    
+    var headerOffset: CGFloat = 60
+    var footerOffset: CGFloat = 60
+    var adjusted: CGFloat = 3
+    
+    var adjustedContentInset: UIEdgeInsets = UIEdgeInsets.zero {
+        willSet {
+            if let scrollView = superview as? UIScrollView {
+                scrollView.contentInset -= adjustedContentInset
+            }
+        }
+        didSet {
+            if let scrollView = superview as? UIScrollView {
+                scrollView.contentInset += adjustedContentInset
+            }
+        }
+    }
+    
+    var tailerInset: UIEdgeInsets = UIEdgeInsets.zero {
+        willSet {
+            if let scrollView = superview as? UIScrollView {
+                scrollView.contentInset -= tailerInset
+            }
+        }
+        didSet {
+            if let scrollView = superview as? UIScrollView {
+                scrollView.contentInset += tailerInset
+            }
+        }
+    }
+    
+    var contentInset: UIEdgeInsets {
+        get {
+//            if #available(iOS 11.0, *) {
+//                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
+//            } else {
+            return scrollView?.contentInset ?? UIEdgeInsets.zero
+//            }
+        }
+    }
+    
+    var isRefreshing: Bool {
+        get {
+            return (header?.isRefreshing ?? false) || (footer?.isRefreshing ?? false)
+        }
+    }
+    
+    var footerActiveMode: JoRefreshFooterActiveMode = .dragging
+    
     private var _header: JoRefreshControl? = nil {
         didSet {
             oldValue?.removeFromSuperview()
@@ -50,90 +114,6 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
                 tailerInset.bottom = newValue.sizeThatFits(superview.frame.size).height
                 superview.insertSubview(newValue, at: 0)
             }
-        }
-    }
-    
-    fileprivate var _headerOfPercent: CGFloat = 0 {
-        didSet {
-            if let scrollView = superview as? UIScrollView {
-                header?.updatePercent(_headerOfPercent, isDragging: scrollView.isDragging, isDecelerating: scrollView.isDecelerating)
-            }
-        }
-    }
-    
-    fileprivate var _footererOfPercent: CGFloat = 0 {
-        didSet {
-            if let scrollView = superview as? UIScrollView {
-                footer?.updatePercent(_footererOfPercent, isDragging: scrollView.isDragging, isDecelerating: scrollView.isDecelerating)
-            }
-        }
-    }
-    
-    var header: JoRefreshControl? {
-        get { return _header }
-        set { _header = newValue }
-    }
-
-    var footer: JoRefreshControl? {
-        get { return _footer }
-        set { _footer = newValue }
-    }
-    
-    var tailer: JoRefreshControl? {
-        get { return _tailer }
-        set { _tailer = newValue }
-    }
-    
-    var headerOfPercent: CGFloat {
-        get { return _headerOfPercent }
-    }
-    
-    var footererOfPercent: CGFloat {
-        get { return _footererOfPercent }
-    }
-    
-    var offset: CGFloat = 60
-    var adjusted: CGFloat = 3
-    
-    var adjustedContentInset: UIEdgeInsets = UIEdgeInsets.zero {
-        willSet {
-            if let scrollView = superview as? UIScrollView {
-                scrollView.contentInset -= adjustedContentInset
-            }
-        }
-        didSet {
-            if let scrollView = superview as? UIScrollView {
-                scrollView.contentInset += adjustedContentInset
-            }
-        }
-    }
-    
-    var tailerInset: UIEdgeInsets = UIEdgeInsets.zero {
-        willSet {
-            if let scrollView = superview as? UIScrollView {
-                scrollView.contentInset -= tailerInset
-            }
-        }
-        didSet {
-            if let scrollView = superview as? UIScrollView {
-                scrollView.contentInset += tailerInset
-            }
-        }
-    }
-    
-    var contentInset: UIEdgeInsets {
-        get {
-//            if #available(iOS 11.0, *) {
-//                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
-//            } else {
-                return scrollView?.contentInset ?? UIEdgeInsets.zero
-//            }
-        }
-    }
-    
-    var isRefreshing: Bool {
-        get {
-            return (header?.isRefreshing ?? false) || (footer?.isRefreshing ?? false)
         }
     }
     
@@ -223,6 +203,14 @@ extension JoRefreshConstant {
                 setActive(view: footer, state: false)
                 dispatchForHeader(header: header, scrollView: scrollView)
             } else if let footer = footer,
+                footerActiveMode == .toBottom,
+                isLongContent,
+                contentOffset.y + scrollView.frame.height + footerOffset > maxY {
+                
+                setActive(view: footer, state: true)
+                setActive(view: header, state: false)
+                dispatchForFooterToBottomMode(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
+            } else if let footer = footer,
                     (contentOffset.y - adjusted > -contentInset.top && !isLongContent) ||
                     (contentOffset.y + scrollView.frame.height - adjusted > maxY && isLongContent) {
                 
@@ -244,14 +232,26 @@ extension JoRefreshConstant {
 
     private func dispatchForHeader(header: JoRefreshControl, scrollView: UIScrollView) {
         header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
-        let percent = abs(header.frame.origin.y) / (header.frame.height + offset)
-        _headerOfPercent = max(0, min(1, percent))
+        let percent = scrollView.isDragging ? max(0, min(1, abs(header.frame.origin.y) / (header.frame.height + headerOffset))) : header.refreshPercent
+        header._updatePercent(percent)
+        if !scrollView.isDragging, percent == 1 {
+            header.beginRefreshing()
+        }
+    }
+    
+    private func dispatchForFooterToBottomMode(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
+        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
+        footer._updatePercent(1.0)
+        footer.beginRefreshing()
     }
     
     private func dispatchForFooter(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
         footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
-        let percent = (footer.frame.maxY - maxY) / (footer.frame.height + offset)
-        _footererOfPercent = max(0, min(1, percent))
+        let percent = scrollView.isDragging ? max(0, min(1, (footer.frame.maxY - maxY) / (footer.frame.height + footerOffset))) : footer.refreshPercent
+        footer._updatePercent(percent)
+        if !scrollView.isDragging, percent == 1 {
+            footer.beginRefreshing()
+        }
     }
     
     private func dispatchForTailer(_ tailer: JoRefreshControl, scrollView: UIScrollView) {
@@ -312,10 +312,6 @@ extension JoRefreshConstant: JoRefreshControlRespond {
                 self.setActive(view: refreshControl, state: false)
             })
         }
-    }
-    
-    func refreshControlDidBegenRespond(_ refreshControl: JoRefreshControl) {
-        
     }
     
     func refreshControlDidRespond(_ refreshControl: JoRefreshControl) {

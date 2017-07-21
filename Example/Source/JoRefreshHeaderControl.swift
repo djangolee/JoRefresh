@@ -13,8 +13,8 @@ class JoRefreshHeaderControl: JoRefreshControl {
     
     let lable: UILabel = UILabel()
     
-    override func updatePercent(_ percent: CGFloat, isDragging: Bool, isDecelerating: Bool) {
-        super.updatePercent(percent, isDragging: isDragging, isDecelerating: isDecelerating)
+    override func updatePercent(_ percent: CGFloat) {
+        super.updatePercent(percent)
         
         if isRefreshing {
             lable.text = "刷新中"

@@ -16,3 +16,23 @@ Installation
 1. Add `pod 'JoRefresh'` to your Podfile.
 2. Run `pod install` or `pod update`.
 3. Import JoRefresh
+
+Usage
+==============
+
+### Init
+
+```
+  let scrollView = ...
+  scrollView.joRefresh.header = JoRefreshControl()
+  scrollView.joRefresh.footer = JoRefreshControl()
+  scrollView.joRefresh.tailer = JoRefreshControl()
+  scrollView.joRefresh.footerActiveMode = .toBottom
+```
+
+### AddTarget
+
+```
+  scrollView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)
+  scrollView.joRefresh.footer?.addTarget(self, action: #selector(moreData), for: .valueChanged)
+```

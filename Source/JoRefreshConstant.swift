@@ -197,12 +197,14 @@ extension JoRefreshConstant {
         }
         
         if state != .changed, state != .began, !isRefreshing {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {  [weak self] in
-                if state != .changed, state != .began, !(self?.isRefreshing ?? false) {
-                    self?.setActive(view: self?.footer, state: false)
-                    self?.setActive(view: self?.header, state: false)
-                }
-            })
+            for index in 1...4 {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.25 * TimeInterval(index)), execute: {  [weak self] in
+                    if state != .changed, state != .began, !(self?.isRefreshing ?? false) {
+                        self?.setActive(view: self?.footer, state: false)
+                        self?.setActive(view: self?.header, state: false)
+                    }
+                })
+            }
         }
     }
     

@@ -306,7 +306,7 @@ extension JoRefreshConstant {
         if state {
             if view.isHidden {
                 view.isHidden = false
-                scrollView.insertSubview(view, at: 0)
+                scrollView.sendSubview(toBack: view)
             }
         } else {
             if !view.isHidden {

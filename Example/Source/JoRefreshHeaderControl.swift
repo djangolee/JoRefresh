@@ -38,7 +38,7 @@ class JoRefreshHeaderControl: JoRefreshControl {
     override func layoutSubviews() {
         super.layoutSubviews()
         lable.frame = bounds
-        backgroundColor = .white
+        backgroundColor = UIColor(white: 1, alpha: 0.5)
         layer.borderWidth = 1
     }
 

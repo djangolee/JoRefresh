@@ -49,6 +49,7 @@ extension JoViewController: UITableViewDelegate, UITableViewDataSource  {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(UITableViewCell.self))!
+        cell.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         cell.textLabel?.text = "\(indexPath)"
         return cell
     }
@@ -91,8 +92,8 @@ extension JoViewController {
 //        tableView.contentInset.bottom = 20
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
-        tableView.joRefresh.tailer = JoRefreshTailerControl()
-        tableView.joRefresh.footerActiveMode = .toBottom
+//        tableView.joRefresh.tailer = JoRefreshTailerControl()
+//        tableView.joRefresh.footerActiveMode = .toBottom
         tableView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)
         tableView.joRefresh.footer?.addTarget(self, action: #selector(moreDate), for: .valueChanged)
         

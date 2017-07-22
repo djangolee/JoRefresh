@@ -13,6 +13,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     // MARK: Member variable
     
     static var JoRefreshConstantContext: UnsafeMutableRawPointer!
+    static fileprivate let animatewithDuration: TimeInterval = 0.25
     
     weak var scrollView: UIScrollView? = nil
     
@@ -67,8 +68,9 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
 //            if #available(iOS 11.0, *) {
 //                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
 //            } else {
-            return scrollView?.contentInset ?? UIEdgeInsets.zero
+//                return scrollView?.contentInset ?? UIEdgeInsets.zero
 //            }
+            return scrollView?.contentInset ?? UIEdgeInsets.zero
         }
     }
     
@@ -156,30 +158,54 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
         guard  JoRefreshConstant.JoRefreshConstantContext == context else {
             return
         }
-        guard let scrollView = object as? UIScrollView,  scrollView == self.superview else {
-            return
-        }
         
-        if #keyPath(UIScrollView.contentOffset) == keyPath {
+        if #keyPath(UIScrollView.contentOffset) == keyPath,
+            let scrollView = object as? UIScrollView,  scrollView == superview {
+            
             scrollViewContentOffsetDidChanged(contentOffset: scrollView.contentOffset)
-        } else if #keyPath(UIScrollView.contentSize) == keyPath {
+        } else if #keyPath(UIScrollView.contentSize) == keyPath,
+            let scrollView = object as? UIScrollView,  scrollView == superview {
+            
             scrollViewContentSizeDidChanged(contentSize: scrollView.contentSize)
+        } else if #keyPath(UIGestureRecognizer.state) == keyPath,
+            let scrollView = superview as? UIScrollView {
+            
+            panGestureRecognizerStateDidChanged(state: scrollView.panGestureRecognizer.state)
         }
     }
     
     private func bringScrollViewKeyPathObserve(_ scrollView: UIScrollView) {
+        let pan = scrollView.panGestureRecognizer
+        pan.addObserver(self, forKeyPath: #keyPath(UIGestureRecognizer.state), options: .new, context: JoRefreshConstant.JoRefreshConstantContext)
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .initial, context: JoRefreshConstant.JoRefreshConstantContext)
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize), options: .initial, context: JoRefreshConstant.JoRefreshConstantContext)
     }
     
     private func unbringScrollViewKeyPathObserve(_ scrollView: UIScrollView) {
+        let pan = scrollView.panGestureRecognizer
+        pan.removeObserver(self, forKeyPath: #keyPath(UIGestureRecognizer.state), context: JoRefreshConstant.JoRefreshConstantContext)
         scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), context: JoRefreshConstant.JoRefreshConstantContext)
         scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize), context: JoRefreshConstant.JoRefreshConstantContext)
     }
 }
 
 extension JoRefreshConstant {
-
+    
+    fileprivate func panGestureRecognizerStateDidChanged(state: UIGestureRecognizerState) {
+        guard superview is UIScrollView else {
+            return
+        }
+        
+        if state != .changed, state != .began, !isRefreshing {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {  [weak self] in
+                if state != .changed, state != .began, !(self?.isRefreshing ?? false) {
+                    self?.setActive(view: self?.footer, state: false)
+                    self?.setActive(view: self?.header, state: false)
+                }
+            })
+        }
+    }
+    
     fileprivate func scrollViewContentOffsetDidChanged(contentOffset: CGPoint) {
         
         guard let scrollView = superview as? UIScrollView else {
@@ -193,7 +219,7 @@ extension JoRefreshConstant {
                 footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
             }
         } else {
-    
+            
             let isLongContent: Bool = scrollView.contentSize.height + contentInset.top + contentInset.bottom > scrollView.frame.height
             let maxY: CGFloat = isLongContent ? scrollView.contentSize.height + contentInset.bottom : scrollView.frame.height - contentInset.top
             if let header = header,
@@ -211,14 +237,12 @@ extension JoRefreshConstant {
                 setActive(view: header, state: false)
                 dispatchForFooterToBottomMode(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
             } else if let footer = footer,
-                    (contentOffset.y - adjusted > -contentInset.top && !isLongContent) ||
+                (contentOffset.y - adjusted > -contentInset.top && !isLongContent) ||
                     (contentOffset.y + scrollView.frame.height - adjusted > maxY && isLongContent) {
                 
                 setActive(view: footer, state: true)
                 setActive(view: header, state: false)
                 dispatchForFooter(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
-            } else {
-                setActive(view: footer, state: false)
             }
         }
     }
@@ -229,7 +253,7 @@ extension JoRefreshConstant {
             superview?.insertSubview(tailer, at: 0)
         }
     }
-
+    
     private func dispatchForHeader(header: JoRefreshControl, scrollView: UIScrollView) {
         header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
         let percent = scrollView.isDragging ? max(0, min(1, abs(header.frame.origin.y) / (header.frame.height + headerOffset))) : header.refreshPercent
@@ -285,29 +309,33 @@ extension JoRefreshConstant: JoRefreshControlRespond {
     
     func beginRefreshing(_ refreshControl: JoRefreshControl) {
         let controlHeight = refreshControl.sizeThatFits(self.superview?.frame.size ?? CGSize.zero).height
-        if refreshControl == header {
-            UIView.animate(withDuration: 0.25, animations: {
+        if refreshControl == header, self.adjustedContentInset.top != controlHeight {
+            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
                 self.adjustedContentInset.top = controlHeight
             })
-        } else if refreshControl == footer {
-            UIView.animate(withDuration: 0.25, animations: {
+        } else if refreshControl == footer, self.adjustedContentInset.bottom != controlHeight {
+            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
                 self.adjustedContentInset.bottom = controlHeight
             })
         }
     }
     
     func endRefreshing(_ refreshControl: JoRefreshControl) {
-
+        
         if refreshControl == header {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.adjustedContentInset.top = 0
-                refreshControl.frame.origin.y = 0
+            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
+                if self.adjustedContentInset.top != 0 {
+                    self.adjustedContentInset.top = 0
+                    refreshControl.frame.origin.y = 0
+                }
             }, completion: { (finish) in
                 self.setActive(view: refreshControl, state: false)
             })
         } else if refreshControl == footer {
-            UIView.animate(withDuration: 0.25, animations: {
-                self.adjustedContentInset.bottom = 0
+            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
+                if self.adjustedContentInset.bottom != 0 {
+                    self.adjustedContentInset.bottom = 0
+                }
             }, completion: { (finish) in
                 self.setActive(view: refreshControl, state: false)
             })
@@ -315,7 +343,7 @@ extension JoRefreshConstant: JoRefreshControlRespond {
     }
     
     func refreshControlDidRespond(_ refreshControl: JoRefreshControl) {
-
+        
     }
     
 }

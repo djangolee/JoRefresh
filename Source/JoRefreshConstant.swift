@@ -192,14 +192,13 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
 extension JoRefreshConstant {
     
     fileprivate func panGestureRecognizerStateDidChanged(state: UIGestureRecognizerState) {
-        guard superview is UIScrollView else {
+        guard let scrollView = superview as? UIScrollView else {
             return
         }
-        
         if state != .changed, state != .began, !isRefreshing {
-            for index in 1...4 {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.25 * TimeInterval(index)), execute: {  [weak self] in
-                    if state != .changed, state != .began, !(self?.isRefreshing ?? false) {
+            for index in 0...4 {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.5 + 0.25 * TimeInterval(index)), execute: {  [weak self] in
+                    if let unweak = self, scrollView.panGestureRecognizer.state != .changed, scrollView.panGestureRecognizer.state != .began, !unweak.isRefreshing  {
                         self?.setActive(view: self?.footer, state: false)
                         self?.setActive(view: self?.header, state: false)
                     }
@@ -218,7 +217,7 @@ extension JoRefreshConstant {
             if let header = header, header.isRefreshing {
                 header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
             } else if let footer = footer, footer.isRefreshing {
-                footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
+                footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom + adjustedContentInset.bottom
             }
         } else {
 
@@ -269,14 +268,16 @@ extension JoRefreshConstant {
     }
     
     private func dispatchForFooterToBottomMode(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
-        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
-        footer._updatePercent(1.0)
-        footer.beginRefreshing()
+        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
+        if !scrollView.isDragging {
+            footer._updatePercent(1.0)
+            footer.beginRefreshing()
+        }
     }
     
     private func dispatchForFooter(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
-        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
-        let percent = scrollView.isDragging ? max(0, min(1, (footer.frame.maxY - maxY) / (footer.frame.height + footerOffset))) : footer.refreshPercent
+        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
+        let percent = scrollView.isDragging ? max(0, min(1, (footer.frame.maxY - maxY + contentInset.bottom) / (footer.frame.height + footerOffset))) : footer.refreshPercent
         footer._updatePercent(percent)
         if !scrollView.isDragging, percent == 1 {
             footer.beginRefreshing()

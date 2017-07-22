@@ -31,7 +31,7 @@ class JoViewController: UIViewController {
     
     @objc func moreDate() {
         print(#function)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
             self.number += Int(arc4random() % 5) + 3
             self.tableView.reloadData()
             self.tableView.joRefresh.endRefreshing()
@@ -88,8 +88,8 @@ extension JoViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.contentInset.top = 100
-        tableView.contentInset.bottom = 20
+//        tableView.contentInset.top = 100
+        tableView.contentInset.bottom = 49
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
 //        tableView.joRefresh.tailer = JoRefreshTailerControl()

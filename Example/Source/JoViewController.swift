@@ -88,12 +88,12 @@ extension JoViewController {
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.contentInset.top = 100
-//        tableView.contentInset.bottom = 20
+        tableView.contentInset.top = 100
+        tableView.contentInset.bottom = 20
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
 //        tableView.joRefresh.tailer = JoRefreshTailerControl()
-//        tableView.joRefresh.footerActiveMode = .toBottom
+        tableView.joRefresh.footerActiveMode = .toBottom
         tableView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)
         tableView.joRefresh.footer?.addTarget(self, action: #selector(moreDate), for: .valueChanged)
         

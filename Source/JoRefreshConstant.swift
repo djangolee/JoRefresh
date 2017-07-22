@@ -177,7 +177,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     private func bringScrollViewKeyPathObserve(_ scrollView: UIScrollView) {
         let pan = scrollView.panGestureRecognizer
         pan.addObserver(self, forKeyPath: #keyPath(UIGestureRecognizer.state), options: .new, context: JoRefreshConstant.JoRefreshConstantContext)
-        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .initial, context: JoRefreshConstant.JoRefreshConstantContext)
+        scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: .new, context: JoRefreshConstant.JoRefreshConstantContext)
         scrollView.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize), options: .initial, context: JoRefreshConstant.JoRefreshConstantContext)
     }
     
@@ -221,8 +221,11 @@ extension JoRefreshConstant {
                 footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height
             }
         } else {
+
+            let isLongContent: Bool = scrollView.contentSize.height > 0 &&
+                                        scrollView.frame.height > 0 &&
+                                        (scrollView.contentSize.height + contentInset.top + contentInset.bottom > scrollView.frame.height)
             
-            let isLongContent: Bool = scrollView.contentSize.height + contentInset.top + contentInset.bottom > scrollView.frame.height
             let maxY: CGFloat = isLongContent ? scrollView.contentSize.height + contentInset.bottom : scrollView.frame.height - contentInset.top
             if let header = header,
                 contentOffset.y + adjusted < -contentInset.top {
@@ -288,11 +291,17 @@ extension JoRefreshConstant {
         guard let view = view else {
             return
         }
+        
         guard let scrollView = superview as? UIScrollView else {
             view.isHidden = true
             view.removeFromSuperview()
             return
         }
+        
+        guard (state == true && scrollView.isDragging) || (state == false)  else {
+            return
+        }
+        
         if state {
             if view.isHidden {
                 view.isHidden = false

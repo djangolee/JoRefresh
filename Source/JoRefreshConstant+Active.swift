@@ -17,15 +17,17 @@ extension JoRefreshConstant {
         guard let scrollView = superview as? UIScrollView else {
             return
         }
-        if state != .changed, state != .began, !isRefreshing {
-            for index in 0...4 {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.5 + 0.25 * TimeInterval(index)), execute: {  [weak self] in
-                    if let unweak = self, scrollView.panGestureRecognizer.state != .changed, scrollView.panGestureRecognizer.state != .began, !unweak.isRefreshing  {
-                        self?.setActive(view: self?.footer, state: false)
-                        self?.setActive(view: self?.header, state: false)
-                    }
-                })
-            }
+        guard state != .changed, state != .began, !isRefreshing else {
+            return
+        }
+        
+        for index in 0...4 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.5 + 0.25 * TimeInterval(index)), execute: {  [weak self] in
+                if let unweak = self, scrollView.panGestureRecognizer.state != .changed, scrollView.panGestureRecognizer.state != .began, !unweak.isRefreshing  {
+                    self?.setActive(view: self?.footer, state: false)
+                    self?.setActive(view: self?.header, state: false)
+                }
+            })
         }
     }
     
@@ -39,7 +41,9 @@ extension JoRefreshConstant {
             if let header = header, header.isRefreshing {
                 header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
             } else if let footer = footer, footer.isRefreshing {
-                footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom + adjustedContentInset.bottom
+                var maxY = scrollView.contentOffset.y + scrollView.frame.height - contentInset.bottom + adjustedContentInset.bottom
+                maxY = max(scrollView.contentSize.height, maxY)
+                footer.frame.origin.y = maxY - footer.frame.height
             }
         } else {
             

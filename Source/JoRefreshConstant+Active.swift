@@ -76,11 +76,23 @@ extension JoRefreshConstant {
     }
     
     internal func scrollViewContentSizeDidChanged(contentSize: CGSize) {
+
+        if let header = header {
+            superview?.addSubview(header)
+            superview?.sendSubview(toBack: header)
+        }
+        
+        if let footer = footer {
+            superview?.addSubview(footer)
+            superview?.sendSubview(toBack: footer)
+        }
+        
         if let tailer = tailer {
-            tailer.frame.origin.y = contentSize.height
             superview?.addSubview(tailer)
             superview?.sendSubview(toBack: tailer)
         }
+        
+        tailer?.frame.origin.y = contentSize.height
     }
     
     private func dispatchForHeader(header: JoRefreshControl, scrollView: UIScrollView) {

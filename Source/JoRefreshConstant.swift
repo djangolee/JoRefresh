@@ -8,13 +8,13 @@
 
 import UIKit
 
-class JoRefreshConstant: UIView, JoRefreshConstantTarget {
+internal class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     
     // MARK: Member variable
     
-    static var JoRefreshConstantContext: UnsafeMutableRawPointer!
-    static fileprivate let animatewithDuration: TimeInterval = 0.25
-    
+    static internal var JoRefreshConstantContext: UnsafeMutableRawPointer!
+    static internal let animatewithDuration: TimeInterval = 0.25
+
     weak var scrollView: UIScrollView? = nil
     
     var header: JoRefreshControl? {
@@ -112,9 +112,8 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
             oldValue?.respondDelegate = nil
             tailerInset.bottom = 0
             if let newValue = _tailer, let superview = superview as? UIScrollView {
-                newValue.frame.origin.y = superview.contentSize.height
-                tailerInset.bottom = newValue.sizeThatFits(superview.frame.size).height
-                superview.insertSubview(newValue, at: 0)
+                superview.addSubview(newValue)
+                tailerInset.bottom = newValue.frame.height
             }
         }
     }
@@ -188,180 +187,3 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
         scrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize), context: JoRefreshConstant.JoRefreshConstantContext)
     }
 }
-
-extension JoRefreshConstant {
-    
-    fileprivate func panGestureRecognizerStateDidChanged(state: UIGestureRecognizerState) {
-        guard let scrollView = superview as? UIScrollView else {
-            return
-        }
-        if state != .changed, state != .began, !isRefreshing {
-            for index in 0...4 {
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + (0.5 + 0.25 * TimeInterval(index)), execute: {  [weak self] in
-                    if let unweak = self, scrollView.panGestureRecognizer.state != .changed, scrollView.panGestureRecognizer.state != .began, !unweak.isRefreshing  {
-                        self?.setActive(view: self?.footer, state: false)
-                        self?.setActive(view: self?.header, state: false)
-                    }
-                })
-            }
-        }
-    }
-    
-    fileprivate func scrollViewContentOffsetDidChanged(contentOffset: CGPoint) {
-        
-        guard let scrollView = superview as? UIScrollView else {
-            return
-        }
-        
-        if isRefreshing {
-            if let header = header, header.isRefreshing {
-                header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
-            } else if let footer = footer, footer.isRefreshing {
-                footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom + adjustedContentInset.bottom
-            }
-        } else {
-
-            let isLongContent: Bool = scrollView.contentSize.height > 0 &&
-                                        scrollView.frame.height > 0 &&
-                                        (scrollView.contentSize.height + contentInset.top + contentInset.bottom > scrollView.frame.height)
-            
-            let maxY: CGFloat = isLongContent ? scrollView.contentSize.height + contentInset.bottom : scrollView.frame.height - contentInset.top
-            if let header = header,
-                contentOffset.y + adjusted < -contentInset.top {
-                
-                setActive(view: header, state: true)
-                setActive(view: footer, state: false)
-                dispatchForHeader(header: header, scrollView: scrollView)
-            } else if let footer = footer,
-                footerActiveMode == .toBottom,
-                isLongContent,
-                contentOffset.y + scrollView.frame.height + footerOffset > maxY {
-                
-                setActive(view: footer, state: true)
-                setActive(view: header, state: false)
-                dispatchForFooterToBottomMode(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
-            } else if let footer = footer,
-                (contentOffset.y - adjusted > -contentInset.top && !isLongContent) ||
-                    (contentOffset.y + scrollView.frame.height - adjusted > maxY && isLongContent) {
-                
-                setActive(view: footer, state: true)
-                setActive(view: header, state: false)
-                dispatchForFooter(footer, scrollView: scrollView, isLongContent: isLongContent, maxY: maxY)
-            }
-        }
-    }
-    
-    fileprivate func scrollViewContentSizeDidChanged(contentSize: CGSize) {
-        if let tailer = tailer {
-            tailer.frame.origin.y = contentSize.height
-            superview?.insertSubview(tailer, at: 0)
-        }
-    }
-    
-    private func dispatchForHeader(header: JoRefreshControl, scrollView: UIScrollView) {
-        header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
-        let percent = scrollView.isDragging ? max(0, min(1, abs(header.frame.origin.y) / (header.frame.height + headerOffset))) : header.refreshPercent
-        header._updatePercent(percent)
-        if !scrollView.isDragging, percent == 1 {
-            header.beginRefreshing()
-        }
-    }
-    
-    private func dispatchForFooterToBottomMode(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
-        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
-        if !scrollView.isDragging {
-            footer.beginRefreshing()
-        }
-    }
-    
-    private func dispatchForFooter(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
-        footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
-        let percent = scrollView.isDragging ? max(0, min(1, (footer.frame.maxY - maxY + contentInset.bottom) / (footer.frame.height + footerOffset))) : footer.refreshPercent
-        footer._updatePercent(percent)
-        if !scrollView.isDragging, percent == 1 {
-            footer.beginRefreshing()
-        }
-    }
-    
-    private func dispatchForTailer(_ tailer: JoRefreshControl, scrollView: UIScrollView) {
-        tailer.frame.origin.y = scrollView.contentSize.height
-    }
-    
-    fileprivate func setActive(view: JoRefreshControl?, state: Bool) {
-        guard let view = view else {
-            return
-        }
-        
-        guard let scrollView = superview as? UIScrollView else {
-            view.isHidden = true
-            view.removeFromSuperview()
-            return
-        }
-        
-        guard (state == true && scrollView.isDragging) || (state == false)  else {
-            return
-        }
-        
-        if state {
-            if view.isHidden {
-                view.isHidden = false
-                scrollView.addSubview(view)
-                scrollView.sendSubview(toBack: view)
-            }
-        } else {
-            if !view.isHidden {
-                view.isHidden = true
-                view.frame.origin = CGPoint.zero
-            }
-        }
-    }
-}
-
-extension JoRefreshConstant: JoRefreshControlRespond {
-    
-    func beginRefreshing(_ refreshControl: JoRefreshControl) {
-        let controlHeight = refreshControl.sizeThatFits(self.superview?.frame.size ?? CGSize.zero).height
-        if refreshControl == header, self.adjustedContentInset.top != controlHeight {
-            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
-                self.adjustedContentInset.top = controlHeight
-            })
-        } else if refreshControl == footer, self.adjustedContentInset.bottom != controlHeight {
-            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
-                self.adjustedContentInset.bottom = controlHeight
-            })
-        }
-    }
-    
-    func endRefreshing(_ refreshControl: JoRefreshControl) {
-        
-        guard let view = refreshControl.superview, view == superview else {
-            return
-        }
-        view.sendSubview(toBack: refreshControl)
-        
-        if refreshControl == header {
-            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
-                if self.adjustedContentInset.top != 0 {
-                    self.adjustedContentInset.top = 0
-                    refreshControl.frame.origin.y = 0
-                }
-            }, completion: { (finish) in
-                self.setActive(view: refreshControl, state: false)
-            })
-        } else if refreshControl == footer {
-            UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
-                if self.adjustedContentInset.bottom != 0 {
-                    self.adjustedContentInset.bottom = 0
-                }
-            }, completion: { (finish) in
-                self.setActive(view: refreshControl, state: false)
-            })
-        }
-    }
-    
-    func refreshControlDidRespond(_ refreshControl: JoRefreshControl) {
-        
-    }
-    
-}
-

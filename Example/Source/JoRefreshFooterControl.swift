@@ -23,6 +23,12 @@ class JoRefreshFooterControl: JoRefreshControl {
         }
     }
     
+    override func beginRefreshing() {
+        super.beginRefreshing()
+        
+        lable.text = "刷新中"
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(lable)

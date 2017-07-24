@@ -92,8 +92,10 @@ extension JoViewController {
         tableView.contentInset.bottom = 49
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
-//        tableView.joRefresh.tailer = JoRefreshTailerControl()
-        tableView.joRefresh.footerActiveMode = .toBottom
+        tableView.joRefresh.tailer = JoRefreshTailerControl()
+//        tableView.joRefresh.footerActiveMode = .toBottom
+//        tableView.joRefresh.header?.isEnabled = false
+//        tableView.joRefresh.footer?.isEnabled = false
         tableView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)
         tableView.joRefresh.footer?.addTarget(self, action: #selector(moreDate), for: .valueChanged)
         

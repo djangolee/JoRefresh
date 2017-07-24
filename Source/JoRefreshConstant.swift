@@ -89,7 +89,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
             if let newValue = _header, let superview = superview as? UIScrollView {
                 newValue.respondDelegate = self
                 newValue.isHidden = true
-                superview.insertSubview(newValue, at: 0)
+                superview.addSubview(newValue)
             }
         }
     }
@@ -101,7 +101,7 @@ class JoRefreshConstant: UIView, JoRefreshConstantTarget {
             if let newValue = _footer, let superview = superview as? UIScrollView {
                 newValue.respondDelegate = self
                 newValue.isHidden = true
-                superview.insertSubview(newValue, at: 0)
+                superview.addSubview(newValue)
             }
         }
     }
@@ -270,7 +270,6 @@ extension JoRefreshConstant {
     private func dispatchForFooterToBottomMode(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
         footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
         if !scrollView.isDragging {
-            footer._updatePercent(1.0)
             footer.beginRefreshing()
         }
     }
@@ -306,6 +305,7 @@ extension JoRefreshConstant {
         if state {
             if view.isHidden {
                 view.isHidden = false
+                scrollView.addSubview(view)
                 scrollView.sendSubview(toBack: view)
             }
         } else {
@@ -333,6 +333,11 @@ extension JoRefreshConstant: JoRefreshControlRespond {
     }
     
     func endRefreshing(_ refreshControl: JoRefreshControl) {
+        
+        guard let view = refreshControl.superview, view == superview else {
+            return
+        }
+        view.sendSubview(toBack: refreshControl)
         
         if refreshControl == header {
             UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {

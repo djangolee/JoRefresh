@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name         = 'JoRefresh'
   spec.summary      = 'A iOS UI components.'
-  spec.version      = '0.0.8'
+  spec.version      = '0.0.9'
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.authors      = { 'django' => 'djangolei@gmail.com' }
   spec.homepage     = 'https://github.com/djangolee/JoRefresh'

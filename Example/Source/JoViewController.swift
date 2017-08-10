@@ -31,11 +31,16 @@ class JoViewController: UIViewController {
     
     @objc func moreDate() {
         print(#function)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.number += Int(arc4random() % 5) + 3
-            self.tableView.reloadData()
-            self.tableView.joRefresh.endRefreshing()
-        }
+        
+        self.number += Int(arc4random() % 5) + 3
+        self.tableView.reloadData()
+        self.tableView.joRefresh.endRefreshing()
+
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+//            self.number += Int(arc4random() % 5) + 3
+//            self.tableView.reloadData()
+//            self.tableView.joRefresh.endRefreshing()
+//        }
     }
 }
 
@@ -92,8 +97,8 @@ extension JoViewController {
         tableView.contentInset.bottom = 49
         tableView.joRefresh.header = JoRefreshHeaderControl()
         tableView.joRefresh.footer = JoRefreshFooterControl()
-        tableView.joRefresh.tailer = JoRefreshTailerControl()
-//        tableView.joRefresh.footerActiveMode = .toBottom
+//        tableView.joRefresh.tailer = JoRefreshTailerControl()
+        tableView.joRefresh.footerActiveMode = .toBottom
 //        tableView.joRefresh.header?.isEnabled = false
 //        tableView.joRefresh.footer?.isEnabled = false
         tableView.joRefresh.header?.addTarget(self, action: #selector(loadData), for: .valueChanged)

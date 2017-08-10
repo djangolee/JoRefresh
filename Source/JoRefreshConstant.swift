@@ -14,7 +14,11 @@ internal class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     
     static internal var JoRefreshConstantContext: UnsafeMutableRawPointer!
     static internal let animatewithDuration: TimeInterval = 0.25
-
+    
+    internal var semaphore: Int = 1
+    internal var lastRefreshTime: TimeInterval = 0
+    var minRefreshInterval: TimeInterval = 2
+    
     weak var scrollView: UIScrollView? = nil
     
     var header: JoRefreshControl? {
@@ -77,6 +81,16 @@ internal class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     var isRefreshing: Bool {
         get {
             return (header?.isRefreshing ?? false) || (footer?.isRefreshing ?? false)
+        }
+    }
+    
+    var canRefresh: Bool {
+        get {
+            if lastRefreshTime + minRefreshInterval < Date().timeIntervalSince1970 && semaphore == 0 && !isRefreshing {
+                return true
+            } else {
+                return false
+            }
         }
     }
     

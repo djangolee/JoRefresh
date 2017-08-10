@@ -39,6 +39,7 @@ public protocol JoRefreshConstantTarget {
     var footerActiveMode: JoRefreshFooterActiveMode { get set }
     
     var isRefreshing: Bool { get }
+    var minRefreshInterval: TimeInterval { get set }
     
     func endRefreshing()
 }

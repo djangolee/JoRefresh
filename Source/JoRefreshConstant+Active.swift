@@ -14,6 +14,11 @@ import Foundation
 extension JoRefreshConstant {
     
     internal func panGestureRecognizerStateDidChanged(state: UIGestureRecognizerState) {
+        
+        if state == .began {
+            semaphore = 0
+        }
+        
         guard let scrollView = superview as? UIScrollView else {
             return
         }
@@ -103,14 +108,14 @@ extension JoRefreshConstant {
         header.frame.origin.y = scrollView.contentOffset.y + contentInset.top - adjustedContentInset.top
         let percent = scrollView.isDragging ? max(0, min(1, abs(header.frame.origin.y) / (header.frame.height + headerOffset))) : header.refreshPercent
         header._updatePercent(percent)
-        if !scrollView.isDragging, percent == 1 {
+        if !scrollView.isDragging, percent == 1, canRefresh {
             header.beginRefreshing()
         }
     }
     
     private func dispatchForFooterToBottomMode(_ footer: JoRefreshControl, scrollView: UIScrollView, isLongContent: Bool, maxY: CGFloat) {
         footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
-        if !scrollView.isDragging {
+        if !scrollView.isDragging, canRefresh {
             footer.beginRefreshing()
         }
     }
@@ -119,7 +124,7 @@ extension JoRefreshConstant {
         footer.frame.origin.y = scrollView.contentOffset.y + scrollView.frame.height - footer.frame.height - contentInset.bottom
         let percent = scrollView.isDragging ? max(0, min(1, (footer.frame.maxY - maxY + contentInset.bottom) / (footer.frame.height + footerOffset))) : footer.refreshPercent
         footer._updatePercent(percent)
-        if !scrollView.isDragging, percent == 1 {
+        if !scrollView.isDragging, percent == 1, canRefresh {
             footer.beginRefreshing()
         }
     }
@@ -163,6 +168,8 @@ extension JoRefreshConstant {
 extension JoRefreshConstant: JoRefreshControlRespond {
     
     func beginRefreshing(_ refreshControl: JoRefreshControl) {
+        lastRefreshTime = Date().timeIntervalSince1970
+        
         let controlHeight = refreshControl.sizeThatFits(self.superview?.frame.size ?? CGSize.zero).height
         if refreshControl == header, self.adjustedContentInset.top != controlHeight {
             UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
@@ -182,6 +189,7 @@ extension JoRefreshConstant: JoRefreshControlRespond {
         }
         view.sendSubview(toBack: refreshControl)
         
+        semaphore = 1
         if refreshControl == header {
             UIView.animate(withDuration: JoRefreshConstant.animatewithDuration, animations: {
                 if self.adjustedContentInset.top != 0 {

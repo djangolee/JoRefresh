@@ -69,12 +69,11 @@ internal class JoRefreshConstant: UIView, JoRefreshConstantTarget {
     
     var contentInset: UIEdgeInsets {
         get {
-//            if #available(iOS 11.0, *) {
-//                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
-//            } else {
-//                return scrollView?.contentInset ?? UIEdgeInsets.zero
-//            }
-            return scrollView?.contentInset ?? UIEdgeInsets.zero
+            if #available(iOS 11.0, *) {
+                return scrollView?.adjustedContentInset ?? UIEdgeInsets.zero
+            } else {
+                return scrollView?.contentInset ?? UIEdgeInsets.zero
+            }
         }
     }
     

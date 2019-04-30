@@ -13,7 +13,7 @@ import Foundation
 
 extension JoRefreshConstant {
     
-    internal func panGestureRecognizerStateDidChanged(state: UIGestureRecognizerState) {
+    internal func panGestureRecognizerStateDidChanged(state: UIGestureRecognizer.State) {
         
         if state == .began {
             semaphore = 0
@@ -88,17 +88,17 @@ extension JoRefreshConstant {
 
         if let header = header {
             superview?.addSubview(header)
-            superview?.sendSubview(toBack: header)
+            superview?.sendSubviewToBack(header)
         }
         
         if let footer = footer {
             superview?.addSubview(footer)
-            superview?.sendSubview(toBack: footer)
+            superview?.sendSubviewToBack(footer)
         }
         
         if let tailer = tailer {
             superview?.addSubview(tailer)
-            superview?.sendSubview(toBack: tailer)
+            superview?.sendSubviewToBack(tailer)
         }
         
         tailer?.frame.origin.y = contentSize.height
@@ -152,7 +152,7 @@ extension JoRefreshConstant {
             if view.isHidden {
                 view.isHidden = false
                 scrollView.addSubview(view)
-                scrollView.sendSubview(toBack: view)
+                scrollView.sendSubviewToBack(view)
             }
         } else {
             if !view.isHidden {
@@ -187,7 +187,7 @@ extension JoRefreshConstant: JoRefreshControlRespond {
         guard let view = refreshControl.superview, view == superview else {
             return
         }
-        view.sendSubview(toBack: refreshControl)
+        view.sendSubviewToBack(refreshControl)
         
         semaphore = 1
         if refreshControl == header {
